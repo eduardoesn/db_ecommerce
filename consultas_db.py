@@ -4,11 +4,11 @@ import pandas as pd
 db_config = {
     'host': 'localhost',
     'user': 'root',
-    'password': 'Bote sua senha', #-- Bote sua senha --
+    'password': 'Bote sua senha', #--- Bote sua senha ---
     'database': 'db_ecommerce'
 }
 
-# --- Consultas SQL Originais ---
+# --- Consultas SQL ---
 consultas_originais = [
     (
         "Consulta 1: Clientes cadastrados em 2024",
