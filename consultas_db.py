@@ -4,7 +4,7 @@ import pandas as pd
 db_config = {
     'host': 'localhost',
     'user': 'root',
-    'password': 'Gordines2812!',
+    'password': 'Bote sua senha', #-- Bote sua senha --
     'database': 'db_ecommerce'
 }
 
