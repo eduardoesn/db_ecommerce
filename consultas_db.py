@@ -4,12 +4,12 @@ import pandas as pd
 db_config = {
     'host': 'localhost',
     'user': 'root',
-    'password': 'Bote sua senha', #--- Bote sua senha ---
+    'password': 'Gordines2812!', #--- Bote sua senha ---
     'database': 'db_ecommerce'
 }
 
 # --- Consultas SQL ---
-consultas_originais = [
+consultas_sql = [
     (
         "Consulta 1: Clientes cadastrados em 2024",
         """
@@ -179,7 +179,7 @@ consultas_originais = [
 ]
 
 # --- Consultas de Álgebra Relacional ---
-consultas_algebra_5 = [
+consultas_algebra = [
     (
         "Consulta 1 (Álgebra 1): Pagamentos 'Pix' > 50",
         """
@@ -267,7 +267,7 @@ consultas_algebra_5 = [
     )
 ]
 
-todas_as_consultas = consultas_originais + consultas_algebra_5
+todas_as_consultas = consultas_sql+ consultas_algebra
 
 try:
     print("Conectando ao banco de dados...")
