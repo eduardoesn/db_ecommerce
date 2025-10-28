@@ -4,14 +4,14 @@ import pandas as pd
 db_config = {
     'host': 'localhost',
     'user': 'root',
-    'password': 'Gordines2812!', #--- Bote sua senha ---
+    'password': 'Sua senha', #--- Bote sua senha ---
     'database': 'db_ecommerce'
 }
 
 # --- Consultas SQL ---
 consultas_sql = [
     (
-        "Consulta 1: Clientes cadastrados em 2024",
+        "Consulta SQL 1: Clientes cadastrados em 2024",
         """
         SELECT
             nome,
@@ -26,7 +26,7 @@ consultas_sql = [
         """
     ),
     (
-        "Consulta 2: Produtos fora das categorias (1, 5, 10) e preço <= 100.00",
+        "Consulta SQL 2: Produtos fora das categorias (1, 5, 10) e preço <= 100.00",
         """
         SELECT
             nome,
@@ -40,7 +40,7 @@ consultas_sql = [
         """
     ),
     (
-        "Consulta 3: Contagem de pedidos por cliente",
+        "Consulta SQL 3: Contagem de pedidos por cliente",
         """
         SELECT
             c.nome AS Nome_Cliente,
@@ -56,7 +56,7 @@ consultas_sql = [
         """
     ),
     (
-        "Consulta 4: Preço máximo e mínimo por categoria",
+        "Consulta SQL 4: Preço máximo e mínimo por categoria",
         """
         SELECT
             ca.nome AS Nome_Categoria,
@@ -71,7 +71,7 @@ consultas_sql = [
         """
     ),
     (
-        "Consulta 5: Valor total de pedidos pagos por 'Cartao Credito' ou 'Pix'",
+        "Consulta SQL 5: Valor total de pedidos pagos por 'Cartao Credito' ou 'Pix'",
         """
         SELECT
             pe.id_pedido,
@@ -90,7 +90,7 @@ consultas_sql = [
         """
     ),
     (
-        "Consulta 6: Top 5 clientes que mais gastaram",
+        "Consulta SQL 6: Top 5 clientes que mais gastaram",
         """
         SELECT
             c.nome AS Nome_Cliente,
@@ -107,7 +107,7 @@ consultas_sql = [
         """
     ),
     (
-        "Consulta 7: Uso de cupons (incluindo não utilizados)",
+        "Consulta SQL 7: Uso de cupons (incluindo não utilizados)",
         """
         SELECT
             cu.codigo AS Codigo_Cupom,
@@ -124,7 +124,7 @@ consultas_sql = [
         """
     ),
     (
-        "Consulta 8: Pedidos com valor total acima da média",
+        "Consulta SQL 8: Pedidos com valor total acima da média",
         """
         SELECT
             p.id_pedido,
@@ -141,7 +141,7 @@ consultas_sql = [
         """
     ),
     (
-        "Consulta 9: Lista de nomes de Clientes e Categorias",
+        "Consulta SQL 9: Lista de nomes de Clientes e Categorias",
         """
         SELECT nome, 'Cliente' AS Tipo
         FROM Clientes
@@ -152,7 +152,7 @@ consultas_sql = [
         """
     ),
     (
-        "Consulta 10: Detalhes do pedido com id_pedido = 10",
+        "Consulta SQL 10: Detalhes do pedido com id_pedido = 10",
         """
         SELECT
             p.id_pedido,
@@ -181,7 +181,7 @@ consultas_sql = [
 # --- Consultas de Álgebra Relacional ---
 consultas_algebra = [
     (
-        "Consulta 1 (Álgebra 1): Pagamentos 'Pix' > 50",
+        "Consulta Álgebra Relacional 1: Pagamentos 'Pix' > 50",
         """
         SELECT
             id_pedido,
@@ -194,7 +194,7 @@ consultas_algebra = [
         """
     ),
     (
-        "Consulta 2 (Álgebra 2): Produtos da categoria 'Eletrônicos'",
+        "Consulta Álgebra Relacional 2: Produtos da categoria 'Eletrônicos'",
         """
         SELECT
             pr.nome AS Nome_Produto
@@ -207,7 +207,7 @@ consultas_algebra = [
         """
     ),
     (
-        "Consulta 3 (Álgebra 3): Clientes que compraram TODOS produtos 'Eletrônicos'",
+        "Consulta Álgebra Relacional 3: Clientes que compraram TODOS produtos 'Eletrônicos'",
         """
         SELECT
             c.nome AS Cliente_Comprou_Tudo
@@ -238,7 +238,7 @@ consultas_algebra = [
         """
     ),
     (
-        "Consulta 4 (Álgebra 4): Nomes de Clientes e Categorias (União)",
+        "Consulta Álgebra Relacional 4: Nomes de Clientes e Categorias (União)",
         """
         SELECT nome, 'Cliente' AS Tipo FROM Clientes
         UNION
@@ -247,7 +247,7 @@ consultas_algebra = [
         """
     ),
     (
-        "Consulta 5 (Álgebra 5): Detalhes do Pedido 10 (Álgebra)",
+        "Consulta Álgebra Relacional 5: Detalhes do Pedido 10 (Álgebra)",
         """
         SELECT
             c.nome AS Nome_Cliente,
@@ -267,7 +267,7 @@ consultas_algebra = [
     )
 ]
 
-todas_as_consultas = consultas_sql+ consultas_algebra
+todas_as_consultas = consultas_sql + consultas_algebra
 
 try:
     print("Conectando ao banco de dados...")
@@ -276,10 +276,57 @@ try:
 
     cursor = conn.cursor()
 
+    # ---  Mostrar todas as tabelas ---
+    
+    print(f"\n========================================================")
+    print(f"Executando: SHOW TABLES")
+    print("===========================================================")
+    
+    try:
+        cursor.execute("SHOW TABLES")
+        tables = cursor.fetchall()
+        table_names = [table[0] for table in tables]
+        
+        if table_names:
+            df_tables = pd.DataFrame(table_names, columns=[f"Tables_in_{db_config['database']}"])
+            print(df_tables)
+            
+            print(f"\n========================================================")
+            print(f"Executando: SELECT * FROM todas as tabelas")
+            print("===========================================================")
+            
+            for table_name in table_names:
+                print(f"\n--- Tabela: {table_name} ---")
+                try:
+                    query = f"SELECT * FROM `{table_name}`" 
+                    cursor.execute(query)
+                    resultados = cursor.fetchall()
+                    nomes_colunas = [i[0] for i in cursor.description]
+                    
+                    if resultados:
+                        df = pd.DataFrame(resultados, columns=nomes_colunas)
+                        print(df)
+                    else:
+                        print(f"A tabela '{table_name}' está vazia.")
+                
+                except mysql.connector.Error as err:
+                    print(f"Erro ao executar a consulta 'SELECT * FROM {table_name}': {err}")
+        else:
+            print("Nenhuma tabela encontrada no banco de dados.")
+
+    except mysql.connector.Error as err:
+        print(f"Erro ao executar 'SHOW TABLES': {err}")
+
+
+
+    print(f"\n========================================================")
+    print(f"Iniciando consulta SQL e Álgebra Relacional")
+    print("===========================================================")
+
     for titulo, query in todas_as_consultas:
         print(f"\n========================================================")
         print(f"Executando: {titulo}")
-        print("========================================================")
+        print("===========================================================")
         
         try:
             cursor.execute(query)
